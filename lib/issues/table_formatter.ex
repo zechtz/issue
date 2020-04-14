@@ -44,5 +44,4 @@ defmodule Issues.TableFormatter do
   def puts_one_line_in_columns(fields, format) do
     :io.format(format, fields)
   end
-
 end

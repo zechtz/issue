@@ -1,6 +1,6 @@
 defmodule Issues.Cli do
   alias Issues.GithubIssues
-  import Issues.GithubIssues, only: [print_table_for_columns: 2]
+  import Issues.TableFormatter , only: [print_table_for_columns: 2]
 
   @default_count 4
 
@@ -35,12 +35,6 @@ defmodule Issues.Cli do
     usage: issues <user> <project> [ count | #{@default_count} ]
     """
     System.halt(0)
-  end
-
-  def process({user, project,_count}) do
-    GithubIssues.fetch(user, project)
-    |> decode_response
-    |> sort_into_descending_order
   end
 
   def process({user, project,count}) do
