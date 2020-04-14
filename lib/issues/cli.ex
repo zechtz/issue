@@ -42,11 +42,19 @@ defmodule Issues.Cli do
     |> sort_into_descending_order
   end
 
-  defp sort_into_descending_order(issues) do
+  def process(user, project,count) do
+    GithubIssues.fetch(user, project)
+    |> decode_response
+    |> sort_into_descending_order
+    |> last(count)
+    |> print_table_for_columns(["number", "created_at", "title"])
+  end
+
+  def sort_into_descending_order(issues) do
     issues
-    |> Enum.sort fn(i1, i2) ->
+    |> Enum.sort(fn(i1, i2) ->
       i1["created_at"] >= i2["created_at"]
-    end
+    end)
   end
 
   defp decode_response({:ok, body}), do: body
@@ -65,5 +73,11 @@ defmodule Issues.Cli do
 
   defp args_to_internal_representation(_) do
     :help
+  end
+
+  defp last(list, count) do
+    list
+    |> Enum.take(count)
+    |> Enum.reverse
   end
 end
