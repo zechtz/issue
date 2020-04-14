@@ -36,8 +36,15 @@ defmodule Issues.Cli do
     System.halt(0)
   end
 
-  def process(user, project,_) do
+  def process(user, project,_count) do
     GithubIssues.fetch(user, project)
+    |> decode_response
+  end
+
+  defp decode_response({:ok, body}), do: body
+
+  defp decode_response({:error, error}) do
+    IO.puts "Error fetching Github: #{error["message"]}"
   end
 
   defp args_to_internal_representation([user, project, count]) do
