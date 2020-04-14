@@ -1,5 +1,5 @@
 defmodule Issues.GithubIssues do
-  @user_agent [ {"User-agent", "Mtabe zachariahn@gmail.com"} ]
+  @user_agent [{"User-agent", "Mtabe zachariahn@gmail.com"}]
   @github_url Application.get_env(:issues, :github_url)
 
   def fetch(user, project) do
@@ -12,8 +12,8 @@ defmodule Issues.GithubIssues do
     "#{@github_url}/#{user}/#{project}/issues"
   end
 
-  def handle_response({_, %{ status_code: status_code, body: body}}) do
-    { status_code |> check_for_error(), body |> Poison.Parser.parse!() }
+  def handle_response({_, %{status_code: status_code, body: body}}) do
+    {status_code |> check_for_error(), body |> Poison.Parser.parse!()}
   end
 
   defp check_for_error(200), do: :ok
